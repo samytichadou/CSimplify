@@ -34,16 +34,20 @@ bl_info = {
 
 from . import (
     properties,
-
+    gui,
+    handlers,
 )
-
 
 # register
 ##################################
 
 def register():
     properties.register()
+    gui.register()
+    handlers.register()
 
 def unregister():
     properties.unregister()
+    gui.unregister()
+    handlers.unregister()
 
