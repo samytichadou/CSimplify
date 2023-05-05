@@ -1,5 +1,4 @@
 #TODO
-# handler option in preferences
 # optimize simplify functions
 # UI refactor
 
@@ -39,9 +38,9 @@ bl_info = {
 ##################################
 
 from . import (
+    preferences,
     properties,
     gui,
-    handlers,
     fix_simplify_operator,
 )
 
@@ -49,13 +48,13 @@ from . import (
 ##################################
 
 def register():
+    preferences.register()
     properties.register()
     gui.register()
-    handlers.register()
     fix_simplify_operator.register()
 
 def unregister():
+    preferences.unregister()
     properties.unregister()
     gui.unregister()
-    handlers.unregister()
     fix_simplify_operator.unregister()
