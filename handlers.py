@@ -14,8 +14,8 @@ def save_post_handler(scene):
     scn=bpy.context.scene
     if scn.csimplify.to_enable:
         scn.csimplify.simplify_toggle=True
-        scn.csimplify._to_enable=False
-        print("CSIMPLIFY --- Save of simplify state avoided")
+        scn.csimplify.to_enable=False
+        print("CSIMPLIFY --- Save of simplify state prevented")
 
 @persistent
 def load_post_handler(scene):
