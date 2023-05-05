@@ -44,7 +44,7 @@ class CSIMPLIFY_PT_render_panel(bpy.types.Panel):
         layout=self.layout
 
         col=layout.column(align=True)
-        col.enabled=props.simplify_toggle
+        # col.enabled=props.simplify_toggle
         draw_csimplify_panel(col, props)
 
 class CSIMPLIFY_PT_object_panel(bpy.types.Panel):
@@ -83,11 +83,14 @@ class CSIMPLIFY_PT_object_panel(bpy.types.Panel):
             if active.library:
                 fp=bpy.path.abspath(active.library.filepath)
                 row.label(text=f"Please fix {fp}")
+            elif active.override_library:
+                fp=bpy.path.abspath(active.override_library.reference.library.filepath)
+                row.label(text=f"Please fix {fp}")
             else:
                 row.operator('csimplify.fix_simplify')
 
         col=layout.column(align=True)
-        col.enabled=props.simplify_object_override
+        # col.enabled=props.simplify_object_override
         draw_csimplify_panel(col, props)
 
 class CSIMPLIFY_PT_general_popover(bpy.types.Panel):
@@ -111,12 +114,17 @@ class CSIMPLIFY_PT_general_popover(bpy.types.Panel):
 
         if context.active_object\
         and context.active_object.type in supported_object_types:
-            col.separator()
-            if context.active_object.csimplify.subdiv_modifiers\
-            and not scn_props.simplify_toggle:
-                col.label(text="Check Object Properties", icon="ERROR")
             ob_props = context.active_object.csimplify
+            col.separator()
+
             col.prop(ob_props, "simplify_object_override", text="Object Override")
+
+            if ob_props.subdiv_modifiers\
+            and not scn_props.simplify_toggle:
+                row=col.row()
+                row.alert=True
+                row.label(text="Check Object Properties", icon="ERROR")
+
             draw_csimplify_panel(col, ob_props)
 
 def view_header_gui(self, context):

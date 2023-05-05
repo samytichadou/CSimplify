@@ -1,6 +1,5 @@
 #TODO
 # optimize simplify functions
-# UI refactor
 
 
 '''

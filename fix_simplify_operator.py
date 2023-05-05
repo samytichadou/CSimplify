@@ -12,7 +12,8 @@ class CSIMPLIFY_OT_fix_simplify(bpy.types.Operator):
     def poll(cls, context):
         if not context.scene.csimplify.simplify_toggle:
             if context.active_object:
-                return not context.active_object.library
+                return not context.active_object.library\
+                and not context.active_object.override_library
 
     def execute(self, context):
         ob=context.active_object
