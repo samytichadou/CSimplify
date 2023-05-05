@@ -49,6 +49,15 @@ def simplify_on(scene):
                             new.modifier_index=idx
                             new.viewport_subdiv=m.levels
                             new.render_subdiv=m.render_levels
+                            # Store Fallback
+                            try:
+                                new_fallback=ob.csimplify.subdiv_modifiers.add()
+                                new_fallback.name=m.name
+                                new_fallback.modifier_index=idx
+                                new_fallback.viewport_subdiv=m.levels
+                                new_fallback.render_subdiv=m.render_levels
+                            except TypeError:
+                                pass
                             # Change
                             if props.simplify_viewport:
                                 m.levels=props.viewport_subdiv_simplify
@@ -86,4 +95,9 @@ def simplify_off(scene):
                 # Remove old entry
                 remove_collection_entry(old_mod.name, ob_entry.subdiv_modifiers)
             idx+=1
+        # Clear Fallback Mod List
+        try:
+            ob_props.subdiv_modifiers.clear()
+        except TypeError:
+            pass
     obj_list.clear()

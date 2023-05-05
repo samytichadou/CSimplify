@@ -42,9 +42,9 @@ class CSIMPLIFY_PT_render_panel(bpy.types.Panel):
         scn = context.scene
         props = scn.csimplify
         layout=self.layout
-        layout.enabled=props.simplify_toggle
-
-        draw_csimplify_panel(layout, props)
+        col=layout.column(align=True)
+        col.enabled=props.simplify_toggle
+        draw_csimplify_panel(col, props)
 
 class CSIMPLIFY_PT_object_panel(bpy.types.Panel):
     bl_label = "CSimplify Override"
@@ -59,15 +59,35 @@ class CSIMPLIFY_PT_object_panel(bpy.types.Panel):
         return context.active_object.type in supported_object_types
 
     def draw_header(self, context):
+        layout=self.layout
         props = context.active_object.csimplify
-        self.layout.prop(props, "simplify_object_override", text="")
+        if props.subdiv_modifiers and not context.scene.csimplify.simplify_toggle:
+            layout.alert=True
+        layout.prop(props, "simplify_object_override", text="")
 
     def draw(self, context):
-        props = context.active_object.csimplify
+        active=context.active_object
+        scn_props=context.scene.csimplify
+        props = active.csimplify
         layout=self.layout
-        layout.enabled=props.simplify_object_override
 
-        draw_csimplify_panel(layout, props)
+        # Fallback
+        if props.subdiv_modifiers and not scn_props.simplify_toggle:
+            col=layout.column(align=True)
+            row=col.row()
+            row.alert=True
+            row.label(text="Object Csimplified but Csimplify disabled")
+            row=col.row()
+            row.alert=True
+            if active.library:
+                fp=bpy.path.abspath(active.library.filepath)
+                row.label(text=f"Please fix {fp}")
+            else:
+                row.operator('csimplify.fix_simplify')
+
+        col=layout.column(align=True)
+        col.enabled=props.simplify_object_override
+        draw_csimplify_panel(col, props)
 
 class CSIMPLIFY_PT_general_popover(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
@@ -91,8 +111,11 @@ class CSIMPLIFY_PT_general_popover(bpy.types.Panel):
         if context.active_object\
         and context.active_object.type in supported_object_types:
             col.separator()
+            if context.active_object.csimplify.subdiv_modifiers\
+            and not scn_props.simplify_toggle:
+                col.label(text="Check Object Properties", icon="ERROR")
             ob_props = context.active_object.csimplify
-            col.label(text="Object Override")
+            col.prop(ob_props, "simplify_object_override", text="Object Override")
             draw_csimplify_panel(col, ob_props)
 
 def view_header_gui(self, context):
@@ -101,10 +124,7 @@ def view_header_gui(self, context):
     if props.simplify_toggle:
         row.alert=True
     row.prop(props, 'simplify_toggle', text="", icon="MOD_SUBSURF")
-    sub=row.row()
-    if not props.simplify_toggle:
-        sub.enabled=False
-    sub.popover(panel="CSIMPLIFY_PT_general_popover", text="")
+    row.popover(panel="CSIMPLIFY_PT_general_popover", text="")
 
 ### REGISTER ---
 def register():

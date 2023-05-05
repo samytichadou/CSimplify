@@ -24,8 +24,6 @@ def load_post_handler(scene):
         scn.csimplify.simplify_toggle=False
         print("CSIMPLIFY --- Removing simplify state")
 
-#TODO Add some removing of simplify state on quit
-
 ### REGISTER ---
 def register():
     bpy.app.handlers.save_pre.append(save_pre_handler)

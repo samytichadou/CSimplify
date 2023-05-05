@@ -1,3 +1,11 @@
+#TODO
+# Add some removing of simplify state on quit
+# fix handlers
+# handler option in preferences
+# use shared function in fix operator
+# optimize simplify functions
+
+
 '''
 Copyright (C) 2018 Samy Tichadou (tonton)
 samytichadou@gmail.com
@@ -35,7 +43,8 @@ bl_info = {
 from . import (
     properties,
     gui,
-    handlers,
+    # handlers,
+    fix_simplify_operator,
 )
 
 # register
@@ -44,10 +53,11 @@ from . import (
 def register():
     properties.register()
     gui.register()
-    handlers.register()
+    # handlers.register()
+    fix_simplify_operator.register()
 
 def unregister():
     properties.unregister()
     gui.unregister()
-    handlers.unregister()
-
+    # handlers.unregister()
+    fix_simplify_operator.unregister()

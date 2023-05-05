@@ -47,19 +47,19 @@ class CSIMPLIFY_PR_object_list(bpy.types.PropertyGroup):
 
 class CSIMPLIFY_PR_object(bpy.types.PropertyGroup):
     simplify_object_override: bpy.props.BoolProperty(
-        name="Simplify Object Override",
+        name="CSimplify Object Override",
         update=update_simplify_callback,
         override = {"LIBRARY_OVERRIDABLE"},
         )
 
     simplify_viewport: bpy.props.BoolProperty(
-        name="Simplify Viewport On",
+        name="CSimplify Viewport On",
         default=True,
         update=update_simplify_callback,
         override = {"LIBRARY_OVERRIDABLE"},
         )
     simplify_render: bpy.props.BoolProperty(
-        name="Simplify Render On",
+        name="CSimplify Render On",
         default=False,
         update=update_simplify_callback,
         override = {"LIBRARY_OVERRIDABLE"},
@@ -81,18 +81,24 @@ class CSIMPLIFY_PR_object(bpy.types.PropertyGroup):
         override = {"LIBRARY_OVERRIDABLE"},
         )
 
+    # Fallback System
+    subdiv_modifiers: bpy.props.CollectionProperty(
+        name="Subdivision Modifiers",
+        type = CSIMPLIFY_PR_subdivision_modifier_list,
+        )
+
 class CSIMPLIFY_PR_scene(bpy.types.PropertyGroup):
     simplify_toggle: bpy.props.BoolProperty(
-        name="Simplify",
+        name="CSimplify",
         update=toggle_simplify_callback,
         )
     simplify_viewport: bpy.props.BoolProperty(
-        name="Simplify Viewport On",
+        name="CSimplify Viewport On",
         default=True,
         update=update_simplify_callback,
         )
     simplify_render: bpy.props.BoolProperty(
-        name="Simplify Render On",
+        name="CSimplify Render On",
         default=False,
         update=update_simplify_callback,
         )
