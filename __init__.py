@@ -2,7 +2,6 @@
 # Add some removing of simplify state on quit
 # fix handlers
 # handler option in preferences
-# use shared function in fix operator
 # optimize simplify functions
 
 

@@ -12,6 +12,28 @@ def remove_collection_entry(entry_name, collection):
     collection.remove(index)
     return index
 
+def reset_modifier_simplify(ob, sub_mod_list):
+    idx=0
+    for m in ob.modifiers:
+        old_mod=None
+        for s in sub_mod_list:
+            if s.name==m.name:
+                old_mod=s
+                break
+            if s.modifier_index==idx:
+                old_mod=s
+                break
+        if old_mod is None:
+            print(f"CSIMPLIFY --- Error with {ob.name} - {m.name}")
+            idx+=1
+            break
+        # Change
+        m.levels=old_mod.viewport_subdiv
+        m.render_levels=old_mod.render_subdiv
+        # Remove old entry
+        remove_collection_entry(old_mod.name, sub_mod_list)
+        idx+=1
+
 def simplify_on(scene):
     obj_list=scene.csimplify.object_list
     # Clear old objects
@@ -74,27 +96,8 @@ def simplify_off(scene):
         ob=ob_entry.object
         ob_props=ob.csimplify
 
-        # Find, store, change subdiv mods
-        idx=0
-        for m in ob.modifiers:
-            old_mod=None
-            if m.type=="SUBSURF":
-                for s in ob_entry.subdiv_modifiers:
-                    if s.name==m.name:
-                        old_mod=s
-                        break
-                    if s.modifier_index==idx:
-                        old_mod=s
-                        break
-                if old_mod is None:
-                    print(f"CSIMPLIFY --- Error with {ob.name} - {m.name}")
-                    break
-                # Change
-                m.levels=old_mod.viewport_subdiv
-                m.render_levels=old_mod.render_subdiv
-                # Remove old entry
-                remove_collection_entry(old_mod.name, ob_entry.subdiv_modifiers)
-            idx+=1
+        reset_modifier_simplify(ob, ob_entry.subdiv_modifiers)
+
         # Clear Fallback Mod List
         try:
             ob_props.subdiv_modifiers.clear()

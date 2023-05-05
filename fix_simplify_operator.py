@@ -1,6 +1,6 @@
 import bpy
 
-from .simplify_functions import remove_collection_entry
+from .simplify_functions import reset_modifier_simplify
 
 class CSIMPLIFY_OT_fix_simplify(bpy.types.Operator):
     bl_idname = "csimplify.fix_simplify"
@@ -22,24 +22,8 @@ class CSIMPLIFY_OT_fix_simplify(bpy.types.Operator):
             self.report({'INFO'}, f"{ob.name} : nothing to correct")
             return {'FINISHED'}
 
-        for m in ob.modifiers:
-            old_mod=None
-            if m.type=="SUBSURF":
-                for s in ob_props.subdiv_modifiers:
-                    if s.name==m.name:
-                        old_mod=s
-                        break
-                    if s.modifier_index==idx:
-                        old_mod=s
-                        break
-                if old_mod is None:
-                    print(f"CSIMPLIFY --- Error with {ob.name} - {m.name}")
-                    break
-                # Change
-                m.levels=old_mod.viewport_subdiv
-                m.render_levels=old_mod.render_subdiv
-                # Remove old entry
-                remove_collection_entry(old_mod.name, ob_props.subdiv_modifiers)
+        reset_modifier_simplify(ob, ob_props.subdiv_modifiers)
+
         ob_props.subdiv_modifiers.clear()
         self.report({'INFO'}, f"{ob.name} corrected")
 
