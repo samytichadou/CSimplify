@@ -26,12 +26,12 @@ bl_info = {
     "name": "CSimplify",
     "description": "Custom Simplify Operator",
     "author": "Samy Tichadou (tonton)",
-    "version": (1, 0, 0),
+    "version": (1, 0, 1),
     "blender": (3, 0, 0),
-    "location": "",
+    "location": "3D Viewport and Render/Object Properties",
     "wiki_url": "https://github.com/samytichadou/CSimplify/blob/master/README.md",
     "tracker_url": "https://github.com/samytichadou/CSimplify/issues/new",
-    "category": "" }
+    "category": "Render" }
 
 # IMPORT SPECIFICS
 ##################################
