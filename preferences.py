@@ -61,8 +61,14 @@ def register():
         bpy.app.handlers.load_post.append(hdl.load_post_handler)
 def unregister():
     bpy.utils.unregister_class(CSIMPLIFY_PF_preferences)
-    if get_addon_preferences().save_handler:
+    try:
         bpy.app.handlers.save_pre.remove(hdl.save_pre_handler)
         bpy.app.handlers.save_post.remove(hdl.save_post_handler)
-    if get_addon_preferences().startup_handler:
+        print("CSIMPLIFY --- Save handlers unregistered")
+    except ValueError:
+        pass
+    try:
         bpy.app.handlers.load_post.remove(hdl.load_post_handler)
+        print("CSIMPLIFY --- Startup handler unregistered")
+    except ValueError:
+        pass

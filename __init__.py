@@ -26,7 +26,7 @@ bl_info = {
     "name": "CSimplify",
     "description": "Custom Simplify Operator",
     "author": "Samy Tichadou (tonton)",
-    "version": (1, 0, 1),
+    "version": (1, 0, 2),
     "blender": (3, 0, 0),
     "location": "3D Viewport and Render/Object Properties",
     "wiki_url": "https://github.com/samytichadou/CSimplify/blob/master/README.md",
