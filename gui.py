@@ -42,6 +42,7 @@ class CSIMPLIFY_PT_render_panel(bpy.types.Panel):
         scn = context.scene
         props = scn.csimplify
         layout=self.layout
+
         col=layout.column(align=True)
         col.enabled=props.simplify_toggle
         draw_csimplify_panel(col, props)

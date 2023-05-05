@@ -1,5 +1,4 @@
 #TODO
-# Add some removing of simplify state on quit
 # handler option in preferences
 # optimize simplify functions
 # UI refactor

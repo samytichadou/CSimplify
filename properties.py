@@ -120,7 +120,6 @@ class CSIMPLIFY_PR_scene(bpy.types.PropertyGroup):
         name="Objects",
         type = CSIMPLIFY_PR_object_list,
         )
-    to_enable: bpy.props.BoolProperty()
 
 ### REGISTER ---
 def register():
@@ -136,6 +135,8 @@ def register():
             )
     bpy.types.Scene.csimplify= \
         bpy.props.PointerProperty(type = CSIMPLIFY_PR_scene, name="CSimplify")
+    bpy.types.WindowManager.csimplify_to_enable=\
+        bpy.props.BoolProperty()
 def unregister():
     bpy.utils.unregister_class(CSIMPLIFY_PR_subdivision_modifier_list)
     bpy.utils.unregister_class(CSIMPLIFY_PR_object_list)
@@ -143,3 +144,4 @@ def unregister():
     bpy.utils.unregister_class(CSIMPLIFY_PR_scene)
     del bpy.types.Object.csimplify
     del bpy.types.Scene.csimplify
+    del bpy.types.WindowManager.csimplify_to_enable

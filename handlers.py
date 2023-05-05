@@ -1,25 +1,40 @@
 import bpy
+import atexit
 from bpy.app.handlers import persistent
 
 @persistent
 def save_pre_handler(scene):
-    scn=bpy.context.scene
+    context=bpy.context
+    scn=context.scene
     if scn.csimplify.simplify_toggle:
         scn.csimplify.simplify_toggle=False
-        scn.csimplify.to_enable=True
-        print("CSIMPLIFY --- Preventing save of simplify state")
+        context.window_manager.csimplify_to_enable=True
+        print("CSIMPLIFY --- Simplify state removed to prevent save")
 
 @persistent
 def save_post_handler(scene):
-    scn=bpy.context.scene
-    if scn.csimplify.to_enable:
+    context=bpy.context
+    scn=context.scene
+    if context.window_manager.csimplify_to_enable:
         scn.csimplify.simplify_toggle=True
-        scn.csimplify.to_enable=False
-        print("CSIMPLIFY --- Save of simplify state prevented")
+        context.window_manager.csimplify_to_enable=False
+        print("CSIMPLIFY --- Simplify state enabled back")
+
+def remove_simplify_atexit(scn):
+    # Remove simplify state if needed
+    if scn.csimplify.simplify_toggle:
+        scn.csimplify.simplify_toggle=False
+        print("CSIMPLIFY --- Removing simplify state")
 
 @persistent
 def load_post_handler(scene):
     scn=bpy.context.scene
+
+    # Register atext function for quit
+    #atexit.register(remove_simplify_atexit, scn)
+    # print("CSIMPLIFY --- Registering atexit function")
+
+    # Remove simplify state if needed
     if scn.csimplify.simplify_toggle:
         scn.csimplify.simplify_toggle=False
         print("CSIMPLIFY --- Removing simplify state")
